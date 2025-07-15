@@ -4,7 +4,7 @@ ob_start();
 <h1>Vanilla software downloads</h1>
 <p class="status">Loading...</p>
 <div class="downloads"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $('.status').text("Fetching Vanilla releases");
 
