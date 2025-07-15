@@ -12,7 +12,7 @@ ob_start();
 
     async function fetchPaperMCReleases() {
         try {
-            const projectData = await $.get('https://api.papermc.io/v2/projects/<?= $project ?>');
+            const projectData = await $.get('https://fill.papermc.io/v2/projects/<?= $project ?>');
             if (projectData.versions) {
                 $('.status').text("Found " + projectData.versions.length + " versions");
                 for (const version of projectData.versions.reverse()) {
@@ -30,10 +30,10 @@ ob_start();
 
     async function handleVersion(version) {
         try {
-            const buildData = await $.get(`https://api.papermc.io/v2/projects/<?= $project ?>/versions/${version}`);
+            const buildData = await $.get(`https://fill.papermc.io/v2/projects/<?= $project ?>/versions/${version}`);
             if (buildData.builds && buildData.builds.length > 0) {
                 const latestBuild = Math.max(...buildData.builds);
-                const downloadUrl = `https://api.papermc.io/v2/projects/<?= $project ?>/versions/${version}/builds/${latestBuild}/downloads/<?= $project ?>-${version}-${latestBuild}.jar`;
+                const downloadUrl = `https://fill.papermc.io/v2/projects/<?= $project ?>/versions/${version}/builds/${latestBuild}/downloads/<?= $project ?>-${version}-${latestBuild}.jar`;
 
                 $('.downloads').append(
                     `<p><a href="${downloadUrl}"><?= $projectDisplay ?> ${version} (build ${latestBuild})</a></p>`
