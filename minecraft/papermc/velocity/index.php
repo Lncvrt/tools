@@ -12,11 +12,11 @@ ob_start();
 
     async function fetchPaperMCReleases() {
         try {
-            const projectData = await $.get('https://fill.papermc.io/v2/projects/<?= $project ?>');
+            const projectData = await $.get('https://fill.papermc.io/v3/projects/<?= $project ?>/versions');
             if (projectData.versions) {
                 $('.status').text("Found " + projectData.versions.length + " versions");
-                for (const version of projectData.versions.reverse()) {
-                    $('.status').text("Fetching release info for " + version);
+                for (const version of projectData.versions) {
+                    $('.status').text("Fetching release info for " + version.version.id);
                     await handleVersion(version);
                 }
                 $('.status').text("Done!");
@@ -30,18 +30,14 @@ ob_start();
 
     async function handleVersion(version) {
         try {
-            const buildData = await $.get(`https://fill.papermc.io/v2/projects/<?= $project ?>/versions/${version}`);
-            if (buildData.builds && buildData.builds.length > 0) {
-                const latestBuild = Math.max(...buildData.builds);
-                const downloadUrl = `https://fill.papermc.io/v2/projects/<?= $project ?>/versions/${version}/builds/${latestBuild}/downloads/<?= $project ?>-${version}-${latestBuild}.jar`;
+            const buildData = await $.get(`https://fill.papermc.io/v3/projects/<?= $project ?>/versions/${version.version.id}/builds/latest`);
 
-                $('.downloads').append(
-                    `<p><a href="${downloadUrl}"><?= $projectDisplay ?> ${version} (build ${latestBuild})</a></p>`
-                );
-            }
+            $('.downloads').append(
+                `<p><a href="${buildData.downloads['server:default'].url}"><?= $projectDisplay ?> ${version.version.id} (build ${buildData.id})</a></p>`
+            );
         } catch (e) {
             $('.downloads').append(
-                `<p>Failed to fetch build info for ${version}</p>`
+                `<p>Failed to fetch build info for ${version.version.id}</p>`
             );
         }
     }
